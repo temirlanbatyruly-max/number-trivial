@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Trivia</title>
+</head>
+<style>
+    body {
+        background-color: #4F71FF;
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: sans-serif;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding: 50px;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 10px 30px -15px black;
+    }
+
+    input {
+        padding: 10px;
+        background-color: transparent;
+        outline: none;
+        border: 1px solid gray;
+        border-radius: 5px;
+        width: 40%;
+        font-size: 15px;
+    }
+
+    .own {
+        width: 60%;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        background-color: #4F71FF;
+        color: white;
+        font-size: 15px;
+    }
+
+    .random {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        background-color: #4F71FF;
+        color: white;
+        font-size: 15px;
+    }
+
+    .input-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    section {
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px -5px gray;
+        border-bottom: 5px solid #4F71FF;
+    }
+
+    p {
+        color: gray;
+    }
+
+    section {
+        width: 400px;
+    }
+</style>
+<body>
+    <main>
+        <div class="input-container">
+            <input type="text" placeholder="Number">
+            <button class="own">Get Fact</button>
+        </div>
+        <button class="random">Get Random Fact</button>
+        <section>
+            <p>Please enter a number between 0 to 300.</p>
+        </section>
+    </main>
+    <script>
+        const section = document.querySelector('section')
+        const ownBtn = document.querySelector('.own')
+        const randomBtn = document.querySelector('.random')
+        const input = document.querySelector('input')
+        const url = 'https://uselessfacts.jsph.pl/api/v2/facts/random?language=en'
+        let numbers = []
+
+        function nums() {
+            for (let i = 0; i < 300; i++) {
+                numbers.push(i)
+            }
+        }
+
+        nums()
+
+        async function getOwnFact() {
+            const num = input.value.trim()
+            const data = await fetch(url)
+            const response = await data.json()
+            section.innerHTML = `<p>${response}</p>`
+        }
+
+        async function getRandomFact() {
+            const num = numbers[Math.floor(Math.random() * numbers.length)]
+            console.log(num)
+            const data = await fetch(url)
+            const response = await data.json()
+            console.log(response)
+            section.innerHTML = `<p>${response.text}</p>`
+        }
+
+        ownBtn.addEventListener('click', getOwnFact)
+        randomBtn.addEventListener('click', getRandomFact)
+    </script>
+</body>
+</html>
